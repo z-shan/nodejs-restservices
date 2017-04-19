@@ -19,6 +19,7 @@ bookRouter.route('/books').get(function(req, res) {
     } else if(req.query.author) {
         query.author = req.query.author;
     }
+
     book.find(query, function(err, books) {
         if(err) {
             res.status(500).send(err);
@@ -27,6 +28,25 @@ bookRouter.route('/books').get(function(req, res) {
         }
     });
 });
+
+bookRouter.route('/books/:bookid').get(function(req, res) {
+    
+    var query = {};
+    if(req.query.genre) {
+        query.genre = req.query.genre;
+    } else if(req.query.author) {
+        query.author = req.query.author;
+    }
+
+    book.find(req.params.bookid, function(err, book) {
+        if(err) {
+            res.status(500).send(err);
+        } else {
+            res.json(book);
+        }
+    });
+});
+
 app.use('/api', bookRouter);
 
 

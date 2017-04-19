@@ -4,7 +4,7 @@ var express = require('express');
 var routes = function(Book) {
     var bookRouter = express.Router();
 
-    bookRouter.route('/books')
+    bookRouter.route('/')
         .get(function(req, res) {
             var query = {};
             if(req.query.genre) {
@@ -27,7 +27,7 @@ var routes = function(Book) {
             res.status(201).send(book);
         });
 
-    bookRouter.route('/books/:bookid').get(function(req, res) {
+    bookRouter.route('/:bookid').get(function(req, res) {
         
         var query = {};
         if(req.query.genre) {

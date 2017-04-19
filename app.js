@@ -11,51 +11,9 @@ var port = process.env.PORT || 3000;
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
+bookRouter = require('./routes/bookRoutes')
 
-var bookRouter = express.Router();
-
-bookRouter.route('/books')
-    .get(function(req, res) {
-        var query = {};
-        if(req.query.genre) {
-            query.genre = req.query.genre;
-        } else if(req.query.author) {
-            query.author = req.query.author;
-        }
-
-        Book.find(query, function(err, books) {
-            if(err) {
-                res.status(500).send(err);
-            } else {
-                res.json(books);
-            }
-        });
-    })
-    .post(function(req, res) {
-        var book = new Book(req.body);
-        book.save();
-        res.status(201).send(book);
-    });
-
-bookRouter.route('/books/:bookid').get(function(req, res) {
-    
-    var query = {};
-    if(req.query.genre) {
-        query.genre = req.query.genre;
-    } else if(req.query.author) {
-        query.author = req.query.author;
-    }
-
-    Book.find(req.params.bookid, function(err, book) {
-        if(err) {
-            res.status(500).send(err);
-        } else {
-            res.json(book);
-        }
-    });
-});
-
-app.use('/api', bookRouter);
+app.use('/api', bookRouter)(Book);
 
 
 app.get('/', function(req, res) {

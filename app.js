@@ -4,7 +4,7 @@ var express = require('express'),
 
 var db = mongoose.connect('mongodb://localhost/bookapi');
 
-var book = require('./model/bookmodel');
+var Book = require('./model/bookmodel');
 var app = express();
 var port = process.env.PORT || 3000;
 
@@ -23,7 +23,7 @@ bookRouter.route('/books')
             query.author = req.query.author;
         }
 
-        book.find(query, function(err, books) {
+        Book.find(query, function(err, books) {
             if(err) {
                 res.status(500).send(err);
             } else {
@@ -32,8 +32,9 @@ bookRouter.route('/books')
         });
     })
     .post(function(req, res) {
-        var book = new book(req.body);
-        res.send(book);
+        var book = new Book(req.body);
+        book.save();
+        res.status(201).send(book);
     });
 
 bookRouter.route('/books/:bookid').get(function(req, res) {
@@ -45,7 +46,7 @@ bookRouter.route('/books/:bookid').get(function(req, res) {
         query.author = req.query.author;
     }
 
-    book.find(req.params.bookid, function(err, book) {
+    Book.find(req.params.bookid, function(err, book) {
         if(err) {
             res.status(500).send(err);
         } else {

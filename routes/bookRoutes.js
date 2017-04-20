@@ -24,7 +24,12 @@ var routes = function(Book) {
     });
     bookRouter.route('/:bookId')
         .get(function(req, res) {
-            res.json(req.book);
+            var returnbook = req.book.toJSON();
+
+            returnbook.links = {};
+            var newlink = 'http://' + req.headers.host + '/api/books/?genre='+returnbook.genre;;
+            returnbook.links.FilterByThisGenre = newlink.replace(' ', '%20');
+            res.json(returnbook);
         })
         .put(function(req, res) {
             req.book.title = req.body.title;

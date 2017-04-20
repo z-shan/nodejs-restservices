@@ -27,16 +27,8 @@ var routes = function(Book) {
             res.status(201).send(book);
         });
 
-    bookRouter.route('/:bookid').get(function(req, res) {
-        
-        var query = {};
-        if(req.query.genre) {
-            query.genre = req.query.genre;
-        } else if(req.query.author) {
-            query.author = req.query.author;
-        }
-
-        Book.find(req.params.bookid, function(err, book) {
+    bookRouter.route('/:bookId').get(function(req, res) {
+        Book.findById(req.params.bookId, function(err, book) {
             if(err) {
                 res.status(500).send(err);
             } else {
@@ -44,6 +36,8 @@ var routes = function(Book) {
             }
         });
     });
+
+    return bookRouter;
 };
 
 module.exports = routes;

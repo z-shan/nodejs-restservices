@@ -2,7 +2,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser');
 
-var db = mongoose.connect('mongodb://localhost/bookapi');
+var db = mongoose.connect('mongodb://localhost/bookAPI');
 
 var Book = require('./model/bookmodel');
 var app = express();
@@ -12,8 +12,10 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
 bookRouter = require('./routes/bookRoutes')(Book);
+//console.log(bookRouter);
 
 app.use('/api/books', bookRouter);
+//app.use('/api/authors', authorRouter);
 
 app.get('/', function(req, res) {
     res.send("Welcome to my api.");
